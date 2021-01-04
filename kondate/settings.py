@@ -139,4 +139,4 @@ STATICFILES_DIRS = (
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-LOGIN_REDIRECT_URL = 'kondate_app:start'
+LOGIN_REDIRECT_URL = 'kondate_app:index'

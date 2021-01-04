@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import IndexView
+from .views import StartView, IndexView
 
 app_name = 'kondate_app'
 urlpatterns = [
-    path('', IndexView.as_view(), name="start")
+    path('', StartView.as_view(), name="start"),
+    path('index/', IndexView.as_view(), name="index")
 ]

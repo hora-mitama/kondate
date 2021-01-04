@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}アカウント作成 | Kondate{% endblock %}
+{% block title %}ログイン | Kondate{% endblock %}
 
 {% block active_signup %}active{% endblock %}
 
@@ -8,8 +8,9 @@
 <div class="container">
   <div class="row">
     <div class="my-div-style mx-auto" style="margin-top: 100px;">
-      <h1>アカウント作成</h1>
-      <form method="POST" action="{% url 'account_signup' %}">
+      <h1>ログアウト</h1>
+      <p>本当にログアウトしますか？</p>
+      <form method="POST" action="{% url 'account_logout' %}">
 
         {% csrf_token %}
 
@@ -18,10 +19,11 @@
         {% if redirect_field_value %}
         <input type='hidden' name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
         {% endif %}
-        <button class="btn btn-primary" type="submit">登録</button>
+        <button class="btn btn-primary" type="submit">ログアウト</button>
       </form>
     </div>
   </div>
 </div>
 
 {% endblock %}
+
