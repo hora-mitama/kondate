@@ -1,11 +1,11 @@
 from django.shortcuts import render
-from django.views import generic
+from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class StartView(generic.TemplateView):
+class StartView(TemplateView):
     template_name = 'start.html'
 
 
-class IndexView(generic.TemplateView, LoginRequiredMixin):
+class IndexView(TemplateView, LoginRequiredMixin):
     template_name = 'index.html'
