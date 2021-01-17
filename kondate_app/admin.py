@@ -2,7 +2,27 @@ from django.contrib import admin
 from .models import Family, Menu, Ingredient
 from accounts.models import CustomUser
 
-admin.site.register(Family)
-admin.site.register(Menu)
-admin.site.register(Ingredient)
-admin.site.register(CustomUser)
+
+@admin.register(CustomUser)
+class CustomUserAdmin(admin.ModelAdmin):
+    List_display = ['']
+
+
+@admin.register(Family)
+class FamilyAdmin(admin.ModelAdmin):
+    List_display = ['']
+
+
+@admin.register(Menu)
+class MenuAdmin(admin.ModelAdmin):
+    List_display = ("name", "memo")
+
+
+@admin.register(Ingredient)
+class IngredientAdmin(admin.ModelAdmin):
+    List_display = ['']
+
+
+FamilyAdmin.list_display = ['name']
+MenuAdmin.list_display = ['name', 'memo']
+IngredientAdmin.list_display = ['name', 'amount']
