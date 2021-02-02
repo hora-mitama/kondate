@@ -1,9 +1,10 @@
 from django.urls import path
-from .views import StartView, IndexView,MenuList
+from .views import StartView, TodayMenuView, MenuCreateView
 
 app_name = 'kondate_app'
 urlpatterns = [
     path('', StartView.as_view(), name="start"),
-    path('index/', IndexView.as_view(), name="index"),
-    path('list/', MenuList.as_view(), name="list"),
+    path('today/', TodayMenuView.as_view(), name="today"),
+    path('create/', MenuCreateView.as_view(), name="create"),
+
 ]

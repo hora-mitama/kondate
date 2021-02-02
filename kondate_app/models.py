@@ -16,10 +16,23 @@ class Family(models.Model):
 
 class Menu(models.Model):
     name = models.CharField(max_length=100)
-    author = models.ForeignKey(Family, on_delete=models.CASCADE, related_name="menu_author")
+    family = models.ForeignKey(Family, on_delete=models.CASCADE, related_name="menu_family")
+    memo = models.TextField(max_length=1000, null=True, blank=True)
+    date = models.DateField(null=True)
+
+    CATEGORY_CHOICES = [
+        ('main_dish', '主菜'),
+        ('side_dish', '副菜'),
+        ('soup', '汁物'),
+        ('rice_dish', '飯物'),
+        ('dessert', 'デザート'),
+        ('drink', '飲み物'),
+    ]
+
+    category = models.CharField(choices=CATEGORY_CHOICES, max_length=10, null=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    memo = models.TextField(max_length=1000, null=True, blank=True)
 
     class Meta:
         verbose_name = 'Menu'
