@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}メインページ{% endblock %}
+
+{% block contents %}
+<div class="container" style="margin-top: 100px;">
+    <div class="row">
+        <div class="mx-auto col-lg-8 col-md-10">
+            <h1>〜本日の献立〜</h1>
+            <p>主菜：{{ object_list.main_dish.name }}</p>
+            <p>副菜：{{ object_list.side_dish.name }}</p>
+            <p>汁物：</p>
+            <p>飯物：</p>
+            <p>デザート：</p>
+            <p>飲み物：</p>
+        </div>
+    </div>
+
+</div>
+{% endblock contents %}
