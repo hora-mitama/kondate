@@ -18,7 +18,7 @@ class Menu(models.Model):
     name = models.CharField(max_length=100)
     family = models.ForeignKey(Family, on_delete=models.CASCADE, related_name="menu_family")
     memo = models.TextField(max_length=1000, null=True, blank=True)
-    date = models.DateField(null=True)
+    date = models.DateField()
 
     CATEGORY_CHOICES = [
         ('main_dish', '主菜'),
@@ -29,7 +29,7 @@ class Menu(models.Model):
         ('drink', '飲み物'),
     ]
 
-    category = models.CharField(choices=CATEGORY_CHOICES, max_length=10, null=True)
+    category = models.CharField(choices=CATEGORY_CHOICES, max_length=10)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
