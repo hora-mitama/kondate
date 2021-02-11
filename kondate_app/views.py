@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.urls import reverse_lazy
 from datetime import date
-from django.views.generic import TemplateView, ListView, CreateView, DetailView, DeleteView
+from django.views.generic import TemplateView, ListView, CreateView, DetailView, DeleteView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from accounts.models import CustomUser
@@ -61,6 +61,44 @@ class MenuCreateView(LoginRequiredMixin, CreateView):
         messages.error(self.request, "献立の作成に失敗しました。")
         return super().form_invalid(form)
 
-#
-# class MenuList(ListView):
-#     template_name = 'list.html'
+
+class MenuUpdateView(LoginRequiredMixin, UpdateView):
+    model = Menu
+    template_name = 'update_menu.html'
+    form_class = MenuCreateForm
+    success_url = reverse_lazy('kondate_app:today')
+
+    def get_success_url(self):
+        return reverse_lazy('kondate_app:today', kwargs={'pk': self.kwargs['pk']})
+
+    def form_valid(self, form):
+        messages.success(self.request, 'レシピを更新しました')
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'レシピの更新に失敗しました')
+        return super(self).form_invalid(form)
+
+
+class MenuDeleteView(LoginRequiredMixin, DeleteView):
+    model = Menu
+    template_name = 'delete_menu.html'
+    success_url = reverse_lazy('kondate_app:today')
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, "献立を削除しました")
+        return super().delete(request, *args, **kwargs)
+
+
+
+
+
+
+
+
+
+
+
+
+
+

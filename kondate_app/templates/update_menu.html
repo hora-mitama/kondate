@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %} 編集 {% endblock %}
+
+{% block contents %}
+<div class="container" style="margin-top: 100px;">
+    <div class="row">
+        <div class="mx-auto col-lg-8 col-md-10">
+
+        <div class="my-div-style w-50" style="margin-top: 100px;">
+            <h2 class="m-4">献立を編集</h2>
+            <form method="post">
+                {% csrf_token %}
+                <table class="table">
+                    {{ form.as_table }}
+                </table>
+                <button class="btn btn-primary" type="submit">
+                    更新
+                </button>
+                <a href="{% url 'kondate_app:today' %}" class="btn btn-secondary ml-2">キャンセル</a>
+            </form>
+        </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
