@@ -15,32 +15,54 @@ class StartView(TemplateView):
 
 class TodayMenuView(LoginRequiredMixin, ListView):
     template_name = 'today_menu.html'
+    model = Menu
 
-    def get_queryset(self):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
         family_obj = CustomUser.objects.get(username=self.request.user).family
         if not family_obj:
-            return True
+            return context
 
         today_menu = family_obj.menu_family.filter(date=date.today())
 
-        main_dish = today_menu.filter(category="main_dish").first()
-        side_dish = today_menu.filter(category="side_dish").first()
-        soup = today_menu.filter(category="soup").first()
-        rice = today_menu.filter(category="rice").first()
-        dessert = today_menu.filter(category="dessert").first()
-        drink = today_menu.filter(category="drink").first()
+        if not today_menu:
+            context["today_menu_blank"] = True
 
-        context = {
-            "family_obj": family_obj,
-            "main_dish": main_dish,
-            "side_dish": side_dish,
-            "soup": soup,
-            "rice": rice,
-            "dessert": dessert,
-            "drink": drink,
-        }
+        context["main_dish"] = today_menu.filter(category="main_dish").first()
+        context["side_dish"] = today_menu.filter(category="side_dish").first()
+        context["soup"] = today_menu.filter(category="soup").first()
+        context["rice"] = today_menu.filter(category="rice").first()
+        context["dessert"] = today_menu.filter(category="dessert").first()
+        context["drink"] = today_menu.filter(category="drink").first()
+
         return context
+
+    # def get_queryset(self):
+    #
+    #     family_obj = CustomUser.objects.get(username=self.request.user).family
+    #     if not family_obj:
+    #         return True
+    #
+    #     today_menu = family_obj.menu_family.filter(date=date.today())
+    #
+    #     main_dish = today_menu.filter(category="main_dish").first()
+    #     side_dish = today_menu.filter(category="side_dish").first()
+    #     soup = today_menu.filter(category="soup").first()
+    #     rice = today_menu.filter(category="rice").first()
+    #     dessert = today_menu.filter(category="dessert").first()
+    #     drink = today_menu.filter(category="drink").first()
+    #
+    #     query_sets = {
+    #         "family_obj": family_obj,
+    #         "main_dish": main_dish,
+    #         "side_dish": side_dish,
+    #         "soup": soup,
+    #         "rice": rice,
+    #         "dessert": dessert,
+    #         "drink": drink,
+    #     }
+    #     return query_sets
 
 
 class MenuCreateView(LoginRequiredMixin, CreateView):

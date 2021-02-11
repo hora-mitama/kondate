@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class Family(models.Model):
@@ -17,8 +18,7 @@ class Family(models.Model):
 class Menu(models.Model):
     name = models.CharField(max_length=100)
     family = models.ForeignKey(Family, on_delete=models.CASCADE, related_name="menu_family")
-    memo = models.TextField(max_length=1000, null=True, blank=True)
-    date = models.DateField()
+    date = models.DateField(default=timezone.now)
 
     CATEGORY_CHOICES = [
         ('main_dish', '主菜'),
@@ -29,8 +29,7 @@ class Menu(models.Model):
         ('drink', '飲み物'),
     ]
 
-    category = models.CharField(choices=CATEGORY_CHOICES, max_length=10)
-
+    category = models.CharField(choices=CATEGORY_CHOICES, max_length=10, default="main_dish")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -42,10 +41,18 @@ class Menu(models.Model):
         return self.name
 
 
+class Memo(models.Model):
+    menu = models.ForeignKey(Menu, on_delete=models.CASCADE, related_name="memo_menu")
+    memo = models.TextField(max_length=1000, null=True, blank=True)
+
+    class Meta:
+        verbose_name = 'Memo'
+        verbose_name_plural = 'Memo'
+
+
 class Ingredient(models.Model):
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    amount = models.CharField(max_length=30)
 
     class Meta:
         verbose_name = 'Ingredient'
@@ -53,3 +60,13 @@ class Ingredient(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class IngredientAmount(models.Model):
+    Ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE, related_name="amount")
+    amount = models.IntegerField()
+
+    class Meta:
+        verbose_name = 'Amount'
+        verbose_name_plural = 'Amount'
+

@@ -6,7 +6,7 @@ from .models import Menu
 class MenuCreateForm(ModelForm):
     class Meta:
         model = Menu
-        fields = ('name', 'memo', 'date', 'category',)
+        fields = ('name', 'date', 'category',)
 
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)

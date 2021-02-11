@@ -6,41 +6,50 @@
 
 {% block contents %}
 <div class="container" style="margin-top: 100px;">
+
+    {% if today_menu_blank is True %}
+        <h2>本日の献立がありません。<br>こちらから新しく献立を作成してください。</h2>
+        <a class="btn btn-primary m-5" href="{% url 'kondate_app:create' %}">新規作成</a>
+    {% else %}
+
     <a class="btn btn-primary float-right" href="{% url 'kondate_app:create' %}">新規作成</a>
     <div class="row">
+
+
         <div class="mx-auto col-lg-8 col-md-10">
             <h2>ー本日の献立ー</h2>
 
-            {% if object_list.main_dish %}
+            {% if main_dish %}
                 <h4 class="border-bottom m-sm-5">主菜</h4>
-                <p>{{ object_list.main_dish.name }}</p>
+                <p>{{ main_dish.name }}</p>
             {% endif %}
 
-            {% if object_list.side_dish %}
+            {% if side_dish %}
                 <h4 class="border-bottom m-sm-5">副菜</h4>
-                <p>{{ object_list.side_dish.name }}</p>
+                <p>{{ side_dish.name }}</p>
             {% endif %}
 
-            {% if object_list.soup %}
+            {% if soup %}
                 <h4 class="border-bottom m-sm-5">汁物</h4>
-                <p>{{ object_list.soup.name }}</p>
+                <p>{{ soup.name }}</p>
             {% endif %}
 
-            {% if object_list.rice %}
+            {% if rice %}
                 <h4 class="border-bottom m-sm-5">飯物</h4>
-                <p>{{ object_list.rice.name }}</p>
+                <p>{{ rice.name }}</p>
             {% endif %}
 
-            {% if object_list.dessert %}
+            {% if dessert %}
                 <h4 class="border-bottom m-sm-5">デザート</h4>
-                <p>{{ object_list.dessert.name }}</p>
+                <p>{{ dessert.name }}</p>
             {% endif %}
 
-            {% if object_list.drink %}
+            {% if drink %}
                 <h4 class="border-bottom m-sm-5">飲み物</h4>
-                <p>{{ object_list.drink.name }}</p>
+                <p>{{ drink.name }}</p>
             {% endif %}
         </div>
+        {% endif  %}
     </div>
 
 </div>

@@ -15,7 +15,7 @@ class FamilyAdmin(admin.ModelAdmin):
 
 @admin.register(Menu)
 class MenuAdmin(admin.ModelAdmin):
-    List_display = ("name", "memo", "date")
+    List_display = ("name", "date")
 
 
 @admin.register(Ingredient)
@@ -24,5 +24,5 @@ class IngredientAdmin(admin.ModelAdmin):
 
 
 FamilyAdmin.list_display = ['name']
-MenuAdmin.list_display = ['name', 'memo', 'date']
+MenuAdmin.list_display = ['name', 'date']
 IngredientAdmin.list_display = ['name', 'amount']
