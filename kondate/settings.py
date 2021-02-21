@@ -86,7 +86,7 @@ DATABASES = {
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'kondate_db',
+        'NAME': 'dev_db',
         'USER': 'postgres',
         'PASSWORD': 'snakaue321321',
         'HOST': '',

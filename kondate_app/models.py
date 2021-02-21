@@ -42,12 +42,15 @@ class Menu(models.Model):
 
 
 class Memo(models.Model):
-    menu = models.ForeignKey(Menu, on_delete=models.CASCADE, related_name="memo_menu")
+    menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
     memo = models.TextField(max_length=1000, null=True, blank=True)
 
     class Meta:
         verbose_name = 'Memo'
         verbose_name_plural = 'Memo'
+
+    def __str__(self):
+        return self.memo
 
 
 class Ingredient(models.Model):
