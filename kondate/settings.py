@@ -115,6 +115,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
+# ACCOUNT_FORMS = {
+#     'signup': 'accounts.forms.SignupForm',
+#     'login': 'accounts.forms.LoginForm',
+# }
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/

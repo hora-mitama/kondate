@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Family, Menu, Ingredient, Memo
+from .models import Family, Menu, MenuIngredient
 from accounts.models import CustomUser
 
 
@@ -18,17 +18,11 @@ class MenuAdmin(admin.ModelAdmin):
     List_display = ("name", "date")
 
 
-@admin.register(Ingredient)
-class IngredientAdmin(admin.ModelAdmin):
-    List_display = ['']
-
-
-@admin.register(Memo)
-class MemoAdmin(admin.ModelAdmin):
+@admin.register(MenuIngredient)
+class MenuIngredientAdmin(admin.ModelAdmin):
     List_display = ['']
 
 
 FamilyAdmin.list_display = ['name']
 MenuAdmin.list_display = ['name', 'date']
-IngredientAdmin.list_display = ['name', 'amount']
-MemoAdmin.list_display = ['memo']
+MenuIngredientAdmin.list_display = ['name']

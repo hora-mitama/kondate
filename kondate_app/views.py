@@ -1,16 +1,14 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.template import context
+from django.utils import timezone
 from django.urls import reverse_lazy
-from datetime import date
-from django.views.generic import TemplateView, CreateView, DeleteView, UpdateView
+from django.views.generic import TemplateView, DeleteView, UpdateView
 
 from accounts.models import CustomUser
 from .models import Menu
-from .forms import MenuCreateForm, MemoFormset
-# from .forms import MenuCreateForm
+from .forms import MenuCreateForm, MenuIngredientFormset
 
 
 class StartView(TemplateView):
@@ -19,14 +17,15 @@ class StartView(TemplateView):
 
 @login_required()
 def today_list(request):
-    is_blank = False
     family_obj = CustomUser.objects.get(username=request.user).family
     if not family_obj:
-        return True
+        family_is_blank = True
+        return render(request, 'today_menu.html', {'family_is_blank': family_is_blank})
 
-    today_menu = family_obj.menu_family.filter(date=date.today())
+    today_menu = family_obj.menu_family.filter(date=timezone.now())
     if not today_menu:
-        is_blank = True
+        today_menu_is_blank = True
+        return render(request, 'today_menu.html', {'today_menu_is_blank': today_menu_is_blank})
 
     main_dish = today_menu.filter(category="main_dish").first()
     side_dish = today_menu.filter(category="side_dish").first()
@@ -42,7 +41,6 @@ def today_list(request):
         'rice': rice,
         'dessert': dessert,
         'drink': drink,
-        'is_blank': is_blank,
     })
 
 
@@ -50,47 +48,32 @@ def today_list(request):
 def create(request):
 
     form = MenuCreateForm(request.POST or None)
-    context = {'form': form}
     family_obj = CustomUser.objects.get(username=request.user).family
 
     if request.method == 'POST' and form.is_valid():
-        post = form.save(commit=False)
-        post.family = family_obj
-        formset = MemoFormset(request.POST, instance=post)
-        if formset.is_valid():
-            post.save()
-            formset.save()
+        menu = form.save(commit=False)
+        menu.family = family_obj
+
+        ingredient_formset = MenuIngredientFormset(request.POST, instance=menu)
+
+        if ingredient_formset.is_valid():
+            menu.save()
+            ingredient_formset.save()
+            message = messages.success(request, "献立を作成しました。")
             return redirect('kondate_app:today')
         else:
-            context['formset'] = formset
+            context = {
+                'form': form,
+                'ingredient_formset': ingredient_formset,
+            }
     else:
-        context['formset'] = MemoFormset()
+        context = {
+            'form': form,
+            'ingredient_formset': MenuIngredientFormset(),
+
+        }
 
     return render(request, 'create_menu.html', context)
-
-# class MenuCreateView(LoginRequiredMixin, CreateView):
-#     model = Menu
-#     template_name = "create_menu.html"
-#     form_class = MenuCreateForm
-#     success_url = reverse_lazy('kondate_app:today')
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['inlines'] = MemoFormset()
-#
-#         return context
-#
-#     def form_valid(self, form):
-#         family_obj = CustomUser.objects.get(username=self.request.user).family
-#         menu = form.save(commit=False)
-#         menu.family = family_obj
-#         menu.save()
-#         messages.success(self.request, "献立を作成しました。")
-#         return super().form_valid(form)
-#
-#     def form_invalid(self, form):
-#         messages.error(self.request, "献立の作成に失敗しました。")
-#         return super().form_invalid(form)
 
 
 class MenuUpdateView(LoginRequiredMixin, UpdateView):

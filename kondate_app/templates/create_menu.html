@@ -12,8 +12,12 @@
             <form method="post">
                 {% csrf_token %}
                 <table class="table">
+                    {{ ingredient_formset.management_form }}
+                    {{ ingredient_formset.non_form_errors }}
                     {{ form.as_table }}
-                    {{ formset.as_table }}
+                    {{ ingredient_formset.as_table }}
+                    {{ memo_formset.as_table }}
+
                 </table>
                 <button class="btn btn-primary" type="submit">
                     作成

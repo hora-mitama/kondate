@@ -1,10 +1,10 @@
-# from django.forms import Form, ModelForm, inlineformset_factory, BaseInlineFormSet
 from django import forms
 
-from .models import Menu, Memo
+from kondate_app.models import Menu, MenuIngredient
 
 
 class MenuCreateForm(forms.ModelForm):
+
     class Meta:
         model = Menu
         fields = ('name', 'date', 'category')
@@ -15,6 +15,10 @@ class MenuCreateForm(forms.ModelForm):
                 field.widget.attrs['class'] = 'form-control'
 
 
-MemoFormset = forms.inlineformset_factory(parent_model=Menu, model=Memo, form=MenuCreateForm,
-                                          fields=('memo',), extra=1,)
-
+MenuIngredientFormset = forms.inlineformset_factory(
+    parent_model=Menu,
+    model=MenuIngredient,
+    form=MenuCreateForm,
+    fields=('name', 'amount'),
+    extra=1,
+)

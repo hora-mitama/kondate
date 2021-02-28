@@ -16,20 +16,20 @@ class Family(models.Model):
 
 
 class Menu(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(verbose_name='名前', max_length=100)
     family = models.ForeignKey(Family, on_delete=models.CASCADE, related_name="menu_family")
-    date = models.DateField(default=timezone.now)
+    date = models.DateField(verbose_name='日付', default=timezone.now)
 
     CATEGORY_CHOICES = [
         ('main_dish', '主菜'),
         ('side_dish', '副菜'),
         ('soup', '汁物'),
-        ('rice_dish', '飯物'),
+        ('rice', '飯物'),
         ('dessert', 'デザート'),
         ('drink', '飲み物'),
     ]
 
-    category = models.CharField(choices=CATEGORY_CHOICES, max_length=10, default="main_dish")
+    category = models.CharField(verbose_name='カテゴリー', choices=CATEGORY_CHOICES, max_length=10, default="main_dish")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -41,21 +41,12 @@ class Menu(models.Model):
         return self.name
 
 
-class Memo(models.Model):
-    menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
-    memo = models.TextField(max_length=1000, null=True, blank=True)
-
-    class Meta:
-        verbose_name = 'Memo'
-        verbose_name_plural = 'Memo'
-
-    def __str__(self):
-        return self.memo
-
-
-class Ingredient(models.Model):
-    menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
+class MenuIngredient(models.Model):
+    menu = models.ForeignKey(Menu, on_delete=models.CASCADE, related_name="ingredient_menu")
+    name = models.CharField(verbose_name='材料', max_length=100)
+    amount = models.CharField(verbose_name='数量', max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = 'Ingredient'
@@ -65,11 +56,16 @@ class Ingredient(models.Model):
         return self.name
 
 
-class IngredientAmount(models.Model):
-    Ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE, related_name="amount")
-    amount = models.IntegerField()
+class MenuProcess(models.Model):
+    menu = models.ForeignKey(Menu, on_delete=models.CASCADE, related_name='process_menu')
+    process = models.TextField(Menu, max_length=200)
+    image = models.ImageField()
+    create_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = 'Amount'
-        verbose_name_plural = 'Amount'
+        verbose_name = '作り方'
+        verbose_name_plural = '作り方'
 
+    def __str__(self):
+        return self.process
