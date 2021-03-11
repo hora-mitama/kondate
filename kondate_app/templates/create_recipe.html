@@ -12,7 +12,7 @@
             <form method="post" enctype="multipart/form-data">
                 <table class="table">
 
-                    {{ ingredient_formset.non_form_errors }}
+                    {{ ingredient_formsets.non_form_errors }}
                     {{ form.non_field_errors }}
 
 
@@ -26,13 +26,13 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label for="{{ form.date.id_for_label }}" class="col-sm-3 col-form-label">日時：</label>
-                        <div class="col-sm-9">
-                            <span class="help-block">{{ error }}</span>
-                            {{ form.date|add_class:'form-date' }}
-                        </div>
-                    </div>
+<!--                    <div class="form-group row">-->
+<!--                        <label for="{{ form.date.id_for_label }}" class="col-sm-3 col-form-label">日時：</label>-->
+<!--                        <div class="col-sm-9">-->
+<!--                            <span class="help-block">{{ error }}</span>-->
+<!--                            {{ form.date|add_class:'form-date' }}-->
+<!--                        </div>-->
+<!--                    </div>-->
 
                     <div class="form-group row">
                         <label for="{{ form.image.id_for_label }}" class="col-sm-3 col-form-label">写真：</label>
@@ -43,34 +43,66 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="{{ form.category.id_for_label }}" class="col-sm-3 col-form-label">カテゴリ：</label>
+                        <label for="{{ form.comment.id_for_label }}" class="col-sm-3 col-form-label">コメント：</label>
                         <div class="col-sm-9">
                             <span class="help-block">{{ error }}</span>
-                            {{ form.category|add_class:'class-name' }}
+                            {{ form.comment|add_class:'form-comment' }}
                         </div>
                     </div>
 
+<!--                    <div class="form-group row">-->
+<!--                        <label for="{{ form.category.id_for_label }}" class="col-sm-3 col-form-label">カテゴリ：</label>-->
+<!--                        <div class="col-sm-9">-->
+<!--                            <span class="help-block">{{ error }}</span>-->
+<!--                            {{ form.category|add_class:'class-name' }}-->
+<!--                        </div>-->
+<!--                    </div>-->
 
-                <!--formset-->
-                    {% for formset in ingredient_formset %}
+
+                <!--ingredient_formset-->
+                    {% for ingredient_formset in ingredient_formsets %}
                     <div class="form-group row">
-                        <label for="{{ formset.name.id_for_label }}" class="col-sm-3 col-form-label">材料</label>
-                        {{ formset.name|add_class:'formset-name' }}
+                        <label for="{{ ingredient_formset.name.id_for_label }}" class="col-sm-3 col-form-label">材料：</label>
+                        {{ ingredient_formset.name|add_class:'ingredient_formset-name' }}
                     <!--{{ form.name.errors }}-->
                     </div>
 
                     <div class="form-group row">
-                        <label for="{{ formset.amount.id_for_label }}"  class="col-sm-3 col-form-label">数量</label>
-                        {{ formset.amount|add_class:'formset-amount' }}
+                        <label for="{{ ingredient_formset.amount.id_for_label }}"  class="col-sm-3 col-form-label">数量：</label>
+                        {{ ingredient_formset.amount|add_class:'ingredient_formset-amount' }}
                     <!--{{ form.amount.errors }}-->
                     </div>
                     {% endfor %}
 
-                     {% for field in formset.hidden_fields %}
-                        {{ field }}
+                     {% for ingredient_field in ingredient_formset.hidden_fields %}
+                        {{ ingredient_field }}
                     {% endfor %}
 
-                    {{ ingredient_formset.management_form }}
+                    {{ ingredient_formsets.management_form }}
+
+                <!--process_formset-->
+
+                    {% for process_formset in process_formsets %}
+                    <div class="form-group row">
+                        <label for="{{ process_formset.name.id_for_label }}" class="col-sm-3 col-form-label">作り方：</label>
+                        {{ process_formset.process|add_class:'process_formset-process' }}
+                    <!--{{ form.name.errors }}-->
+                    </div>
+
+<!--                    <div class="form-group row">-->
+<!--                        <label for="{{ process_formset.amount.id_for_label }}"  class="col-sm-3 col-form-label">数量：</label>-->
+<!--                        {{ process_formset.number|add_class:'process_formset-number' }}-->
+<!--                    &lt;!&ndash;{{ form.amount.errors }}&ndash;&gt;-->
+<!--                    </div>-->
+                    {% endfor %}
+
+                     {% for process_field in process_formset.hidden_fields %}
+                        {{ process_field }}
+                    {% endfor %}
+
+                    {{ process_formsets.management_form }}
+
+
                     {% csrf_token %}
                 </table>
                 <button class="btn btn-primary" type="submit">

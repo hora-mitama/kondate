@@ -1,18 +1,13 @@
 from django import forms
 
-from kondate_app.models import Recipe, RecipeIngredient
+from kondate_app.models import Recipe, RecipeIngredient, RecipeProcess
 
 
 class RecipeCreateForm(forms.ModelForm):
 
     class Meta:
         model = Recipe
-        fields = ('name', 'date', 'image', 'category', )
-        # exclude = ('family',)
-
-        # def __init__(self, *args, **kwargs):
-        #     super().__init__(*args, **kwargs)
-        #     self.fields[0].widget.attrs["class"] = "name_field"
+        fields = ('name', 'image', 'comment')
 
 
 RecipeIngredientFormset = forms.inlineformset_factory(
@@ -23,3 +18,25 @@ RecipeIngredientFormset = forms.inlineformset_factory(
     extra=1,
     can_delete=False,
 )
+
+RecipeProcessFormset = forms.inlineformset_factory(
+    parent_model=Recipe,
+    model=RecipeProcess,
+    form=RecipeCreateForm,
+    fields=('process',),
+    extra=1,
+    can_delete=False,
+)
+
+
+
+# class RecipeCreateForm(forms.ModelForm):
+#
+#     class Meta:
+#         model = Recipe
+#         fields = ('name', 'date', 'image', 'category', )
+#         # exclude = ('family',)
+#
+#         # def __init__(self, *args, **kwargs):
+#         #     super().__init__(*args, **kwargs)
+#         #     self.fields[0].widget.attrs["class"] = "name_field"

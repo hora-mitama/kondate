@@ -5,9 +5,6 @@
 {% block contents %}
 <div class="container" style="margin-top: 100px;">
 
-    {% if family_is_blank is True %}
-        <h2>ご登録誠にありがとうございます。<br>使用開始に伴い、まずは家族の登録、<br>もしくは既存の家族への追加を行ってください。</h2>
-    {% else %}
         {% if today_menu_is_blank is True %}
             <h2>本日の献立がありません。<br>こちらから新しく献立を作成してください。</h2>
             <a class="btn btn-primary m-5" href="{% url 'kondate_app:create' %}">新しくレシピを作成する</a>

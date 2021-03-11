@@ -5,9 +5,11 @@ from accounts.models import CustomUser
 
 class Recipe(models.Model):
     name = models.CharField(verbose_name='名前', max_length=100)
-    user = models.ForeignKey(CustomUser, vorbose_name='ユーザー',
+    user = models.ForeignKey(CustomUser, verbose_name='ユーザー',
                              on_delete=models.CASCADE,
                              related_name='recipe_user')
+    comment = models.TextField(verbose_name='コメント', max_length=1000, null=True,
+                               blank=True)
     image = models.ImageField(upload_to='images/%Y/%m/%d', verbose_name='写真',
                               height_field='url_height',
                               width_field='url_width',)
@@ -42,13 +44,13 @@ class RecipeIngredient(models.Model):
 
 
 class RecipeProcess(models.Model):
-    process = models.TextField(Recipe, max_length=200)
+    process = models.TextField(max_length=200)
     recipe = models.ForeignKey(Recipe, verbose_name='レシピ',
                                on_delete=models.CASCADE,
                                related_name='process_Recipe')
-    image = models.ImageField(upload_to='images/processes/%Y/%m/%d', verbose_name='写真',
-                              height_field='url_height',
-                              width_field='url_width',)
+    # image = models.ImageField(upload_to='images/processes/%Y/%m/%d', verbose_name='写真',
+    #                           height_field='url_height',
+    #                           width_field='url_width',)
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
 
