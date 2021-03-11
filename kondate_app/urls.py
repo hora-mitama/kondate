@@ -1,12 +1,16 @@
+from django.conf.urls.static import static
 from django.urls import path
-from .views import StartView, MenuUpdateView, MenuDeleteView, today_list, create
+
+from kondate import settings
+from .views import StartView, RecipeUpdateView, RecipeDeleteView, today_list, create
 
 app_name = 'kondate_app'
 urlpatterns = [
     path('', StartView.as_view(), name="start"),
     path('today/', today_list, name="today"),
     path('create/', create, name="create"),
-    path('update/<int:pk>', MenuUpdateView.as_view(), name="update"),
-    path('delete/<int:pk>', MenuDeleteView.as_view(), name="delete"),
-
+    path('update/<int:pk>', RecipeUpdateView.as_view(), name="update"),
+    path('delete/<int:pk>', RecipeDeleteView.as_view(), name="delete"),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

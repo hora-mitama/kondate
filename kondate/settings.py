@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'kondate_app',
     'accounts.apps.AccountsConfig',
     'debug_toolbar',
+    'imagekit',
+    'django_cleanup',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -70,6 +73,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -86,7 +90,7 @@ DATABASES = {
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dev_db',
+        'NAME': 'dev_db_1.1',
         'USER': 'postgres',
         'PASSWORD': 'snakaue321321',
         'HOST': '',
@@ -147,3 +151,7 @@ STATICFILES_DIRS = (
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 LOGIN_REDIRECT_URL = 'kondate_app:today'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+MEDIA_URL = '/media/'

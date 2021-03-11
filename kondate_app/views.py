@@ -7,8 +7,8 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, DeleteView, UpdateView
 
 from accounts.models import CustomUser
-from .models import Menu
-from .forms import MenuCreateForm, MenuIngredientFormset
+from .models import Recipe
+from .forms import RecipeCreateForm, RecipeIngredientFormset
 
 
 class StartView(TemplateView):
@@ -20,21 +20,21 @@ def today_list(request):
     family_obj = CustomUser.objects.get(username=request.user).family
     if not family_obj:
         family_is_blank = True
-        return render(request, 'today_menu.html', {'family_is_blank': family_is_blank})
+        return render(request, 'today_recipe.html', {'family_is_blank': family_is_blank})
 
-    today_menu = family_obj.menu_family.filter(date=timezone.now())
-    if not today_menu:
-        today_menu_is_blank = True
-        return render(request, 'today_menu.html', {'today_menu_is_blank': today_menu_is_blank})
+    today_recipe = family_obj.recipe_family.filter(date=timezone.now())
+    if not today_recipe:
+        today_recipe_is_blank = True
+        return render(request, 'today_recipe.html', {'today_recipe_is_blank': today_recipe_is_blank})
 
-    main_dish = today_menu.filter(category="main_dish").first()
-    side_dish = today_menu.filter(category="side_dish").first()
-    soup = today_menu.filter(category="soup").first()
-    rice = today_menu.filter(category="rice").first()
-    dessert = today_menu.filter(category="dessert").first()
-    drink = today_menu.filter(category="drink").first()
+    main_dish = today_recipe.filter(category="main_dish").first()
+    side_dish = today_recipe.filter(category="side_dish").first()
+    soup = today_recipe.filter(category="soup").first()
+    rice = today_recipe.filter(category="rice").first()
+    dessert = today_recipe.filter(category="dessert").first()
+    drink = today_recipe.filter(category="drink").first()
 
-    return render(request, 'today_menu.html', {
+    return render(request, 'today_recipe.html', {
         'main_dish': main_dish,
         'side_dish': side_dish,
         'soup': soup,
@@ -47,39 +47,42 @@ def today_list(request):
 @login_required()
 def create(request):
 
-    form = MenuCreateForm(request.POST or None)
+    form = RecipeCreateForm(request.POST, request.FILES)
     family_obj = CustomUser.objects.get(username=request.user).family
 
     if request.method == 'POST' and form.is_valid():
-        menu = form.save(commit=False)
-        menu.family = family_obj
+        recipe = form.save(commit=False)
+        recipe.family = family_obj
 
-        ingredient_formset = MenuIngredientFormset(request.POST, instance=menu)
+        ingredient_formset = RecipeIngredientFormset(request.POST, instance=recipe)
 
         if ingredient_formset.is_valid():
-            menu.save()
+            recipe.save()
             ingredient_formset.save()
             message = messages.success(request, "献立を作成しました。")
             return redirect('kondate_app:today')
         else:
+            formset_error = ingredient_formset.errors
             context = {
+                'formset_error': formset_error,
                 'form': form,
                 'ingredient_formset': ingredient_formset,
             }
     else:
+        form_error = form.errors
         context = {
+            'form_error': form_error,
             'form': form,
-            'ingredient_formset': MenuIngredientFormset(),
-
+            'ingredient_formset': RecipeIngredientFormset(),
         }
 
-    return render(request, 'create_menu.html', context)
+    return render(request, 'create_recipe.html', context)
 
 
-class MenuUpdateView(LoginRequiredMixin, UpdateView):
-    model = Menu
-    template_name = 'update_menu.html'
-    form_class = MenuCreateForm
+class RecipeUpdateView(LoginRequiredMixin, UpdateView):
+    model = Recipe
+    template_name = 'update_Recipe.html'
+    form_class = RecipeCreateForm
     success_url = reverse_lazy('kondate_app:today')
 
     def get_success_url(self):
@@ -94,9 +97,9 @@ class MenuUpdateView(LoginRequiredMixin, UpdateView):
         return super(self).form_invalid(form)
 
 
-class MenuDeleteView(LoginRequiredMixin, DeleteView):
-    model = Menu
-    template_name = 'delete_menu.html'
+class RecipeDeleteView(LoginRequiredMixin, DeleteView):
+    model = Recipe
+    template_name = 'delete_Recipe.html'
     success_url = reverse_lazy('kondate_app:today')
 
     def delete(self, request, *args, **kwargs):

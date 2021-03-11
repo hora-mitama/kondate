@@ -10,9 +10,9 @@
     {% else %}
         {% if today_menu_is_blank is True %}
             <h2>本日の献立がありません。<br>こちらから新しく献立を作成してください。</h2>
-            <a class="btn btn-primary m-5" href="{% url 'kondate_app:create' %}">新規作成</a>
+            <a class="btn btn-primary m-5" href="{% url 'kondate_app:create' %}">新しくレシピを作成する</a>
         {% else %}
-            <a class="btn btn-primary float-right" href="{% url 'kondate_app:create' %}">新規作成</a>
+            <a class="btn btn-primary float-right" href="{% url 'kondate_app:create' %}">新しくレシピを作成する</a>
             <div class="row">
                 <div class="mx-auto col-lg-8 col-md-10">
                     <h2>ー本日の献立ー</h2>

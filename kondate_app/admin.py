@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Family, Menu, MenuIngredient
+# from .models import Family, Recipe, RecipeIngredient
+from .models import Recipe, RecipeIngredient
 from accounts.models import CustomUser
 
 
@@ -7,22 +8,22 @@ from accounts.models import CustomUser
 class CustomUserAdmin(admin.ModelAdmin):
     List_display = ['']
 
+#
+# @admin.register(Family)
+# class FamilyAdmin(admin.ModelAdmin):
+#     List_display = ['']
 
-@admin.register(Family)
-class FamilyAdmin(admin.ModelAdmin):
-    List_display = ['']
 
-
-@admin.register(Menu)
-class MenuAdmin(admin.ModelAdmin):
+@admin.register(Recipe)
+class RecipeAdmin(admin.ModelAdmin):
     List_display = ("name", "date")
 
 
-@admin.register(MenuIngredient)
-class MenuIngredientAdmin(admin.ModelAdmin):
+@admin.register(RecipeIngredient)
+class RecipeIngredientAdmin(admin.ModelAdmin):
     List_display = ['']
 
 
-FamilyAdmin.list_display = ['name']
-MenuAdmin.list_display = ['name', 'date']
-MenuIngredientAdmin.list_display = ['name']
+# FamilyAdmin.list_display = ['name']
+RecipeAdmin.list_display = ['name', 'date', 'family', 'image']
+RecipeIngredientAdmin.list_display = ['name']
